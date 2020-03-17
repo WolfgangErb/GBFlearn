@@ -2,8 +2,9 @@
 
 A very simple toolbox to illustrate how graph basis functions (GBFs) can be used for interpolation, classification and semi-supervised learning on graphs.
 --------------------------------------------------------------------------------
-
+<p align="center"> 
 <img src="img/logo_gbflearn.png" width="300"> 
+</p>
 
 Version: 0.1 (01.03.2020)
 
