@@ -15,11 +15,11 @@ Written by <a href="http://www.lissajous.it"> Wolfgang Erb</a>
 General Description
 -------------------
 
-**GBFlearn** is a simple Matlab toolbox for interpolation, regression, and semi-supervised learning with graph basis functions (GBFs).
+**GBFlearn** is a simple Matlab toolbox for interpolation, regression, and semi-supervised learning with graph basis functions.
 
-Graph basis functions (GBFs) are graph analogs of the well-known radial basis functions or spherical basis functions. Generalized shifts of positive definite GBFs generate kernels on graphs that can be used, as in traditional continuous settings, to approximate and interpolate signals on graphs, or as kernel machines for supervised and semi-supervised learning.  
+Graph basis functions (GBFs) are graph analogs of the well-known radial basis functions or the spherical basis functions. Generalized shifts of positive definite GBFs generate kernels on graphs that can be used, as in traditional continuous settings, to approximate and interpolate graph signals, or as kernel machines for supervised and semi-supervised learning.  
 
-An introduction to the entire theory related to GBFs on graphs can be found in [1]. Applications of GBFs to machine learning on graphs is described in [2].    
+An introduction to GBFs explaining the relation to kernel methods on graphs is given in [1]. Applications of GBFs to machine learning on graphs can be found in [2].    
 
 <br>
 
@@ -31,7 +31,7 @@ Description of the Code
 
 The package contains three main parts
 
-- The main folder contains example scripts and demos on how to use GBFs in the interpolation, regression and classification of graph signals. 
+- The main *Matlab* folder contains example scripts and demos on how to use GBFs for the interpolation, regression and classification of graph signals. 
 
 - The subfolder *./core* contains the core code of the package for the generation of the different graphs, the basis functions and the plots. 
 
@@ -39,7 +39,7 @@ The package contains three main parts
 
 The example scripts can be divided into two categories:
 
-- The files of the form **GBF_example_ITP_(graph).m** are used to demonstrate how GBFs can be used for the interpolation of graph signals and how GBF's compare to bandlimited interpolation.  
+- The files of the form **GBF_example_ITP_(graph).m** are used to demonstrate how GBFs can be used for the interpolation of graph signals and how GBFs compare to bandlimited interpolation.  
 
 - In the scripts of the form **GBF_example_SSL_(graph).m** supervised and semi-supervised classification based on feature-augmented GBF-kernels is tested on several data sets. 
 
@@ -57,7 +57,7 @@ Anybody interested in accelerating or refining the actual code is warmly welcome
 Citation and Credits
 --------------------
 
-This code was written by Wolfgang Erb at the Dipartimento di Matematica ''Tullio Levi-Civita'', University of Padova. The corresponding theory on GBFs related to the interpolation of graph signals and to kernel-based learning on graphs is given in  
+This code was written by Wolfgang Erb at the Dipartimento di Matematica ''Tullio Levi-Civita'', University of Padova. The corresponding theory on GBFs related to the interpolation of graph signals and to kernel-based learning is given in  
 
 
 *   [1] &nbsp; Erb, W. <br>
