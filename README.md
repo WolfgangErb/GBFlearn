@@ -61,7 +61,7 @@ This code was written by Wolfgang Erb at the Dipartimento di Matematica ''Tullio
 
 
 *   [1] &nbsp; Erb, W. <br>
-    <i> Graph Signal Interpolation with Positive Definite Graph Basis Functions (2019)  </i> <br>
+    <i> Graph Signal Interpolation with Positive Definite Graph Basis Functions </i> <br>
     arXiv: arXiv:1912.02069 [eess.SP] (2019) 
 
 *   [2] &nbsp; Erb, W. <br>
