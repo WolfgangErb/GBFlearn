@@ -51,7 +51,7 @@ Remarks
 
 The main purpose of this code is to see how GBFs can be used for the interpolation of graph signals, or in supervised and semi-supervised classification on graphs. The calculations rely heavily on the graph Fourier transform and are therefore quite expensive if larger spectral decompositions have to be calculated. I wrote the code mainly for didactical purposes and didn't optimize it for speed. Therefore, some of the computations might be quite slow for larger graphs. 
 
-Anybody interested in accelerating or refining the actual code is warmly welcome to contribute. The same holds true if anybody is interested in adding new examples or analysis tools. Please contact me (wolfgang.erb@lissajous.it) if you need further information. 
+Anybody interested in accelerating or refining the actual code is warmly welcome to contribute. The same holds true if anybody is interested in adding new examples or analysis tools. Please contact me (www.lissajous.it) if you need further information. 
 
 
 Citation and Credits
@@ -62,7 +62,7 @@ This code was written by Wolfgang Erb at the Dipartimento di Matematica ''Tullio
 
 *   [1] &nbsp; Erb, W. <br>
     <i> Graph Signal Interpolation with Positive Definite Graph Basis Functions </i> <br>
-    arXiv: arXiv:1912.02069 [eess.SP] (2019) 
+    arXiv:1912.02069 [eess.SP] (2019) 
 
 *   [2] &nbsp; Erb, W. <br>
     <i> Semi-Supervised Learning on Graphs with Feature-Augmented Graph Basis Functions  </i> <br>
