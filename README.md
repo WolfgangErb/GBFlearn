@@ -66,7 +66,7 @@ This code was written by Wolfgang Erb at the Dipartimento di Matematica ''Tullio
 
 *   [2] &nbsp; Erb, W. <br>
     <i> Semi-Supervised Learning on Graphs with Feature-Augmented Graph Basis Functions  </i> <br>
-    arXiv:2003.17865  [eess.SP] (2020) 
+    arXiv:2003.07646  [cs.LG] (2020) 
 
 <br>
 Source for the Stanford bunny: Stanford
