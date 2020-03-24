@@ -2,26 +2,25 @@
 % and classification with graph basis functions (GBFs)
 % (C) W. Erb 01.03.2020
 
-function [bf,pdf] = GBF_genGBF(U, Lambda, NodeInd, type, alpha, epsilon)
+function [bf,pdf] = GBF_genGBF(U, Lambda, idxW, type, alpha)
 
-% function [bf,pdf] = GBF_genGBF(U, Lambda, NodeInd, type, alpha, epsilon)
+% function [bf,pdf] = GBF_genGBF(U, Lambda, idxW, type, alpha, epsilon)
 %
-% Computes K generalized translates of the GBF for the nodes in NodeInd
+% Computes K generalized translates of the GBF for the nodes in idxW
 %
 % In:
 %    U         = NxN matrix - the Fourier transform matrix on G
 %    Lambda    = Nx1 vector - the eigenvalues of the Laplacian
-%    NodeInd   = K vector - The indices of the K interpolation nodes
+%    idxW      = K vector - The indices of the K interpolation nodes
 %    type      = type of graph basis function
 %    alpha     = additional shape parameter
-%    epsilon   = additional shape parameter
 %
 % Out:
 %    bf        = NxK matrix with the K basis function vectors
 %    pdf       = the generating p.d. function f
 
 N = length(Lambda);
-K = length(NodeInd);
+K = length(idxW);
 
 %Initialize variables
 
@@ -33,11 +32,11 @@ base = zeros(N,1);
 switch type
     
   case 'varspline'      %Variation spline kernel
-  if ~exist('epsilon','var')
-      epsilon = 0;
+  if length(alpha)==1;
+      alpha(2) = 0;
   end    
     
-  f = (epsilon+Lambda).^(alpha);
+  f = (alpha(2)+Lambda).^(alpha(1));
   f(abs(f)>=1e12) = 0;
   
   case 'diffusion'      %Diffusion kernel
@@ -45,8 +44,11 @@ switch type
   f = exp(alpha*Lambda);
   
   case 'polydecay'      %Kernel with polynomial decay
+  if length(alpha)==1;
+      alpha(2) = 1;
+  end      
       
-  f = (1:N).^(alpha); f = f';
+  f = transpose(1+alpha(2)*(0:N-1)).^(alpha(1));
   
   case 'bandlimited'    %Bandlimited kernel
      
@@ -64,9 +66,9 @@ end
 % Compute the matrix of basis vectors
 
 for i=1:K
-    base(NodeInd(i))=1;
+    base(idxW(i))=1;
     bf(:,i)=A*base;
-    base(NodeInd(i))=0;
+    base(idxW(i))=0;
 end
   
 return

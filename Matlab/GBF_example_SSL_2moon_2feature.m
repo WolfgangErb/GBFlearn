@@ -45,9 +45,9 @@ plotpar.edge = 0;               %put 1 if you want to plot edges
 plotpar.edgewidth = 0.5;        %width of edges
 
 %Choose labeled nodes of the graph
-IntIndex = [6,7,11,12]';
+idxW = [6,7,11,12]';
 label4 = 2*label - sign(G.nodes(:,1));
-y = label4(IntIndex);
+yW = label4(idxW);
 
 %Kernel parameter
 type = 'diffusion';             %Type of GBF
@@ -57,9 +57,9 @@ gamma = -1;                     %Shape parameter of 1. feature kernel
 gamma2 = 0.1;                   %Shape parameter of 2. feature kernel
 
 %Calculate standard GBF-RLS classfier (for four classes)
-bf = GBF_genGBF(G.U,G.Lambda,IntIndex,type,alpha);
+bf = GBF_genGBF(G.U,G.Lambda,idxW,type,alpha);
 
-sclass = GBF_multiclassRLSGBF(bf,IntIndex,y,lambda);
+sclass = GBF_multiclassRLSGBF(bf,idxW,yW,lambda);
 
 %Initiate 1. feature based on spectral clustering
 %(Shi-Malik normalized cut using the median)
@@ -78,10 +78,10 @@ scut(idxcutup)=1; scut(idxcutdown) = -1;
 scut2(idxcutup2)=1; scut2(idxcutdown2) = -1;
 
 %Calculate PSI-GBF-RLS classfier
-binK  = GBF_genbinK(IntIndex,scut,gamma);
-binK2 = GBF_genbinK(IntIndex,scut2,gamma2);
+binK  = GBF_genbinK(idxW,scut,gamma);
+binK2 = GBF_genbinK(idxW,scut2,gamma2);
 
-sPSIclass = GBF_multiclassRLSGBF(bf.*binK.*binK2, IntIndex, y, lambda);
+sPSIclass = GBF_multiclassRLSGBF(bf.*binK.*binK2, idxW, yW, lambda);
 
 %Plot: comparison of supervised and semi-supervised classification
 
@@ -103,7 +103,7 @@ subplot(2,6,[3,4,9,10]),
 GBF_drawsignal(G.nodes,G.edges,sclass,plotpar);
 title('GBF-RLS classification');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 
@@ -111,7 +111,7 @@ subplot(2,6,[5,6,11,12]),
 GBF_drawsignal(G.nodes,G.edges,sPSIclass,plotpar);
 title('\psi-GBF-RLS classification');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 

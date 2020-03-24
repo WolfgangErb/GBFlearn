@@ -2,18 +2,18 @@
 % and classification with graph basis functions (GBFs)
 % (C) W. Erb 01.03.2020
 
-function [s,c,Kf] = GBF_itpGBF(bf, NodeInd, y , delta)
+function [s,c,Kf] = GBF_itpGBF(bf, idxW, y , delta)
 
-% function [s,c,Kf] = GBF_itpGBF(bf, NodeInd, y, delta)
+% function [s,c,Kf] = GBF_itpGBF(bf, idxW, y, delta)
 %
 % Computes the GBF interpolant s, which
 % fulfills the interpolation property
 %            s(i) = y(i),
-% for all sampling nodes i in NodeInd. 
+% for all sampling nodes i in idxW. 
 %
 % In:
 %    bf        = Nxk matrix - the k basis vectors
-%    NodeInd   = k vector - The indices of the k interpolation nodes
+%    idxW      = k vector - The indices of the k interpolation nodes
 %    y         = k vector - The interpolation values at the k nodes
 %    delta     = augmentation parameter for c.p.d. interpolation
 %
@@ -36,7 +36,7 @@ Kf = zeros(k,k);
 % Generate matrix for the interpolation
 
 for i=1:k
-    Kf(i,:) = bf(NodeInd(i),:);
+    Kf(i,:) = bf(idxW(i),:);
 end
 
 switch delta

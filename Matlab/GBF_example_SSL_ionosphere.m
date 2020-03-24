@@ -66,18 +66,18 @@ meanclasserror = zeros(4,length(M));
 %Calculate the mean classification errors of R random experiments
 for j = 1:length(M)
   for r = 1:R
-    IntIndex = randsample(G.N,M(j));
-    y = label(IntIndex);
+    idxW = randsample(G.N,M(j));
+    yW = label(idxW);
 
     %Calculate standard RLS solution
-    bf = GBF_genGBF(G.U,G.Lambda,IntIndex,type,alpha);
-    sRLS = GBF_RLSGBF(bf,IntIndex,y,lambda);
+    bf = GBF_genGBF(G.U,G.Lambda,idxW,type,alpha);
+    sRLS = GBF_RLSGBF(bf,idxW,yW,lambda);
 
     %Calculate feature adapted RLS solution
-    bin1 = GBF_genbinK(IntIndex,sCutclass,gamma1);
-    bin2 = GBF_genbinK(IntIndex,sCutclass,gamma2);
-    sTP1 = GBF_RLSGBF(bf.*bin1, IntIndex, y, lambda);
-    sTP2 = GBF_RLSGBF(bf.*bin2, IntIndex, y, lambda); 
+    bin1 = GBF_genbinK(idxW,sCutclass,gamma1);
+    bin2 = GBF_genbinK(idxW,sCutclass,gamma2);
+    sTP1 = GBF_RLSGBF(bf.*bin1, idxW, yW, lambda);
+    sTP2 = GBF_RLSGBF(bf.*bin2, idxW, yW, lambda); 
   
     %Calculate classifications
     idxsRLSup = find(sRLS>=0); idxsRLSdown = find(sRLS<0);

@@ -39,12 +39,12 @@ plotpar.edgewidth = 1;          %width of edges
 
 %Create phantom and interpolation data on graph
 M = 40;
-IntIndex = (1:M);
+idxW = (1:M);
 
 findP = find(G.nodes(:,1) >= 0.5);
 fOriginal = zeros(G.N,1);
 fOriginal(findP) = 1;
-y = fOriginal(IntIndex);
+yW = fOriginal(idxW);
 
 %Kernel parameters
 type1 = 'diffusion';
@@ -54,11 +54,11 @@ type2 = 'bandlimited';
 alpha2 = 0;
 
 %Calculate GBF interpolants
-bf1 = GBF_genGBF(G.U,G.Lambda, IntIndex,type1,alpha1);
-bf2 = GBF_genGBF(G.U,G.Lambda, IntIndex,type2,alpha2);
+bf1 = GBF_genGBF(G.U,G.Lambda, idxW,type1,alpha1);
+bf2 = GBF_genGBF(G.U,G.Lambda, idxW,type2,alpha2);
 
-s1 = GBF_itpGBF(bf1, IntIndex, y);
-s2 = GBF_itpGBF(bf2, IntIndex, y);
+s1 = GBF_itpGBF(bf1, idxW, yW);
+s2 = GBF_itpGBF(bf2, idxW, yW);
 
 %Plot GBF and bandlimited interpolation
 figure('Units', 'pixels', ...
@@ -78,7 +78,7 @@ plotpar.laxis = min(s1);
 GBF_drawsignal(G.nodes,G.edges,s1,plotpar);
 title('GBF interpolation');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',8)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',8)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 
@@ -88,6 +88,6 @@ plotpar.laxis = min(s2);
 GBF_drawsignal(G.nodes,G.edges,s2,plotpar);
 title('Bandlimited interpolation');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',8)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',8)
 set(gca,'XTick',[], 'YTick', [])
 hold off;

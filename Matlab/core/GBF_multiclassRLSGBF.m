@@ -2,14 +2,14 @@
 % and classification with graph basis functions (GBFs)
 % (C) W. Erb 01.03.2020
 
-function sclass = GBF_multiclassRLSGBF(bf, NodeInd, y , lambda)
+function sclass = GBF_multiclassRLSGBF(bf, idxW, y , lambda)
 
-% function sclass = GBF_multiclassRLSGBF(bf, NodeInd, y, lambda)
+% function sclass = GBF_multiclassRLSGBF(bf, idxW, y, lambda)
 %
 % GBF_RLSGBF computes the GBF regularized least squares solution s,
 % minimizing the functional
 %            1/K \sum_i (s(i) - y(i)) + \lambda \|s\|_(K),
-% based on K sampling nodes in NodeInd. 
+% based on K sampling nodes in idxW. 
 % 
 % GBF_multiclassRLSGBF uses a one-vs-rest strategy to reduce
 % multiclass problems to binary classification problems with GBF_RLSGBF 
@@ -17,7 +17,7 @@ function sclass = GBF_multiclassRLSGBF(bf, NodeInd, y , lambda)
 % 
 % In:
 %    bf        = NxK matrix - the K graph basis vectors
-%    NodeInd   = K vector - The indices of the K sampling nodes
+%    idxW      = K vector - The indices of the K sampling nodes
 %    y         = K vector - The sampling values at the K nodes
 %    lambda    = regularization parameter for RLS
 %
@@ -39,7 +39,7 @@ for i=1:classN
     classx(classx==classlabel(i)) = RLSvalue;
     classx(classx~=RLSvalue) = -1;
     classx(classx==RLSvalue) = 1;
-    s(:,i) = GBF_RLSGBF(bf,NodeInd,classx,lambda);
+    s(:,i) = GBF_RLSGBF(bf,idxW,classx,lambda);
 end
 
 % Determine classes according to highest confidence score 

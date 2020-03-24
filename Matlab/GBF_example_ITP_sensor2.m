@@ -40,22 +40,22 @@ plotpar.edgewidth = 1;          %width of edges
 
 %Choose interpolation nodes and values on the graph
 M = 12;
-IntIndex = (1:M)';
-y = zeros(M,1); y(1:M/2) = ones(M/2,1);
+idxW = (1:M)';
+yW = zeros(M,1); yW(1:M/2) = ones(M/2,1);
 
 %Kernel parameter
 type = 'diffusion';
 alpha = -10;
 
 %Calculate GBF interpolant
-bf = GBF_genGBF(G.U,G.Lambda, IntIndex,type,alpha);
-s = GBF_itpGBF(bf, IntIndex, y);
+bf = GBF_genGBF(G.U,G.Lambda, idxW,type,alpha);
+s = GBF_itpGBF(bf, idxW, yW);
 
 %Plot GBF interpolant
 figure
 GBF_drawsignal(G.nodes,G.edges,s,plotpar);
 title('GBF interpolant with diffusion kernel');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',8)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',8)
 set(gca,'XTick',[], 'YTick', [])
 hold off;

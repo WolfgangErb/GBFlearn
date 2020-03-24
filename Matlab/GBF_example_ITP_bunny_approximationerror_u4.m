@@ -54,7 +54,7 @@ type3 = 'polydecay';
 alpha3 = -4;
 
 type4 = 'varspline';
-alpha4 = -2; epsilon4 = 0.01;
+alpha4 = [-2,0.01];
 
 % Initialize
 MM = 2:2:100;
@@ -69,18 +69,18 @@ error3 = zeros(1,nMM); error4 = zeros(1,nMM);
 % Start evaluation loop
 for i = 1:nMM
     
-IntIndex = nodeselect(1:MM(i));
-y = f(IntIndex);
+idxW = nodeselect(1:MM(i));
+yW = f(idxW);
 
-bf1 = GBF_genGBF(G.U,G.Lambda,IntIndex,type1,alpha1);
-bf2 = GBF_genGBF(G.U,G.Lambda,IntIndex,type2,alpha2);
-bf3 = GBF_genGBF(G.U,G.Lambda,IntIndex,type3,alpha3);
-bf4 = GBF_genGBF(G.U,G.Lambda,IntIndex,type4,alpha4,epsilon4);
+bf1 = GBF_genGBF(G.U,G.Lambda,idxW,type1,alpha1);
+bf2 = GBF_genGBF(G.U,G.Lambda,idxW,type2,alpha2);
+bf3 = GBF_genGBF(G.U,G.Lambda,idxW,type3,alpha3);
+bf4 = GBF_genGBF(G.U,G.Lambda,idxW,type4,alpha4);
 
-s1(:,i) = GBF_itpGBF(bf1, IntIndex,y);
-s2(:,i) = GBF_itpGBF(bf2, IntIndex,y);
-s3(:,i) = GBF_itpGBF(bf3, IntIndex,y);
-s4(:,i) = GBF_itpGBF(bf4, IntIndex,y);
+s1(:,i) = GBF_itpGBF(bf1, idxW,yW);
+s2(:,i) = GBF_itpGBF(bf2, idxW,yW);
+s3(:,i) = GBF_itpGBF(bf3, idxW,yW);
+s4(:,i) = GBF_itpGBF(bf4, idxW,yW);
 
 error1(i) = norm(s1(:,i)-f,inf)/norm(f,inf);
 error2(i) = norm(s2(:,i)-f,inf)/norm(f,inf);
@@ -168,7 +168,7 @@ plotpar.laxis = min(s3(:,KK));
 GBF_drawsignal(G.nodes,G.edges,s3(:,KK),plotpar);
 title('GBF interpolant (polynomial, s = 4)');
 hold on;
-plot( G.nodes(IntIndex(1:MM(KK)),1),G.nodes(IntIndex(1:MM(KK)),2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',8)
+plot( G.nodes(idxW(1:MM(KK)),1),G.nodes(idxW(1:MM(KK)),2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',8)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 
@@ -178,6 +178,6 @@ plotpar.laxis = 0;
 GBF_drawsignal(G.nodes,G.edges,abs(f-s3(:,KK))/max(f),plotpar);
 title('Interpolation error (polynomial, s = 4)');
 hold on;
-plot( G.nodes(IntIndex(1:MM(KK)),1),G.nodes(IntIndex(1:MM(KK)),2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',8)
+plot( G.nodes(idxW(1:MM(KK)),1),G.nodes(idxW(1:MM(KK)),2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',8)
 set(gca,'XTick',[], 'YTick', [])
 hold off;

@@ -43,8 +43,8 @@ plotpar.edgewidth = 1;          %width of edges
 
 %Choose interpolation nodes and values on the graph
 M = 18;
-IntIndex = (1:M)';
-y = label(1:M);
+idxW = (1:M)';
+yW = label(1:M);
 
 %Kernel parameters
 type = 'diffusion';             %Type of GBF
@@ -54,11 +54,11 @@ gamma1 = 10;                    %Similarity parameter feature 1
 gamma2 = 10;                    %Similarity parameter feature 2
 
 %Calculate GBF-RLS solution
-bf = GBF_genGBF(G.U,G.Lambda, IntIndex, type, alpha);
-s = GBF_RLSGBF(bf, IntIndex, y,lambda);
+bf = GBF_genGBF(G.U,G.Lambda, idxW, type, alpha);
+s = GBF_RLSGBF(bf, idxW, yW,lambda);
 
 % Extract geometric features
-idxplus = find(y==1); idxminus = find(y==-1);
+idxplus = find(yW==1); idxminus = find(yW==-1);
 
 X1 = nodes(idxplus,:);
 X2 = [nodes(idxminus,1),ones(numel(nodes(idxminus,1)),1)];
@@ -82,11 +82,11 @@ dist2 = abs(nodes(:,2) - aline*nodes(:,1) - bline);
 scut = [2*exp(-20.*dist1.^2)-1,2*exp(-5.*dist2.^2)-1];
 
 %Calculate PSI-GBF-RLS solution for 1 and 2 additional features
-simK1 = GBF_genexpK(IntIndex,scut(:,1),gamma1);
-simK2 = GBF_genexpK(IntIndex,scut(:,2),gamma2);
+simK1 = GBF_genexpK(idxW,scut(:,1),gamma1);
+simK2 = GBF_genexpK(idxW,scut(:,2),gamma2);
 
-sAdd1 = GBF_RLSGBF(bf.*simK1, IntIndex, y, lambda);
-sAdd2 = GBF_RLSGBF(bf.*simK1.*simK2, IntIndex, y, lambda);
+sAdd1 = GBF_RLSGBF(bf.*simK1, idxW, yW, lambda);
+sAdd2 = GBF_RLSGBF(bf.*simK1.*simK2, idxW, yW, lambda);
 
 %Calculate RLS classifications
 
@@ -119,7 +119,7 @@ subplot(2,6,[3,4,9,10]),
 GBF_drawsignal(G.nodes,G.edges,scut(:,1),plotpar);
 title('Geometric feature 1');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 
@@ -127,7 +127,7 @@ subplot(2,6,[5,6,11,12]),
 GBF_drawsignal(G.nodes,G.edges,scut(:,2),plotpar);
 title('Geometric feature 2');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 
@@ -141,7 +141,7 @@ subplot(2,6,[1,2,7,8]),
 GBF_drawsignal(G.nodes,G.edges,sclass,plotpar);
 title('GBF-RLS classification');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 
@@ -149,7 +149,7 @@ subplot(2,6,[3,4,9,10]),
 GBF_drawsignal(G.nodes,G.edges,sAdd1class,plotpar);
 title('\psi-GBF-RLS class. (1 feat.)');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 
@@ -157,6 +157,6 @@ subplot(2,6,[5,6,11,12]),
 GBF_drawsignal(G.nodes,G.edges,sAdd2class,plotpar);
 title('\psi-GBF-RLS class. (2 feat.)');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
 hold off;

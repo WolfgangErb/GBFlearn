@@ -15,10 +15,7 @@ function A = GBF_adjmat(edges,N)
 % A            : Adjacency matrix of the graph G
 
 A = zeros(N,N);
-
-for i = 1:size(edges,1)
-    A(edges(i,1),edges(i,2)) = 1;
-    A(edges(i,2),edges(i,1)) = 1;
-end
+A(sub2ind([N N],edges(:,1),edges(:,2))) = 1;
+A(sub2ind([N N],edges(:,2),edges(:,1))) = 1;
 
 return

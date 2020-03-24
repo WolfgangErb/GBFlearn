@@ -44,8 +44,8 @@ plotpar.edge = 0;               %put 1 if you want to plot edges
 plotpar.edgewidth = 0.5;        %width of edges
 
 %Choose labeled nodes of the graph
-IntIndex = [5,6]';
-y = label(IntIndex);
+idxW = [5,6]';
+yW = label(idxW);
 
 %Kernel parameter
 type = 'diffusion';             %Type of GBF
@@ -54,8 +54,8 @@ lambda = 0.0001;                %Regularization parameter
 gamma = -1;                     %Shape parameter of feature kernel
 
 %Calculate standard GBF-RLS solution
-bf = GBF_genGBF(G.U,G.Lambda, IntIndex,type,alpha);
-s = GBF_RLSGBF(bf, IntIndex, y,lambda);
+bf = GBF_genGBF(G.U,G.Lambda, idxW,type,alpha);
+s = GBF_RLSGBF(bf, idxW, yW,lambda);
 
 %Calculate (unsupervised) classification based on spectral clustering
 %Corresponds to the normalized cut of Shi and Malik
@@ -67,8 +67,8 @@ idxcutup = find(scut>=cut); idxcutdown = find(scut<cut);
 scut(idxcutup)=1; scut(idxcutdown) = -1;
 
 %Calculate PSI-GBF-RLS solution
-binK = GBF_genbinK(IntIndex,scut,gamma);
-[sPSI,~] = GBF_RLSGBF(bf.*binK, IntIndex, y, lambda);
+binK = GBF_genbinK(idxW,scut,gamma);
+[sPSI,~] = GBF_RLSGBF(bf.*binK, idxW, yW, lambda);
 
 %Calculate classifications
 idxsup = find(s>=0); idxsdown = find(s<0);
@@ -98,7 +98,7 @@ subplot(2,8,[5,6,13,14]),
 GBF_drawsignal(G.nodes,G.edges,s,plotpar);
 title('GBF-RLS solution');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 
@@ -106,7 +106,7 @@ subplot(2,8,[7,8,15,16]),
 GBF_drawsignal(G.nodes,G.edges,sclass,plotpar);
 title('GBF-RLS classification');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 
@@ -131,7 +131,7 @@ subplot(2,8,[5,6,13,14]),
 GBF_drawsignal(G.nodes,G.edges,sPSI,plotpar);
 title('\psi-GBF-RLS solution');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 
@@ -139,7 +139,7 @@ subplot(2,8,[7,8,15,16]),
 GBF_drawsignal(G.nodes,G.edges,sPSIclass,plotpar);
 title('\psi-GBF-RLS classification');
 hold on;
-plot( G.nodes(IntIndex,1),G.nodes(IntIndex,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
+plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
 hold off;
 
