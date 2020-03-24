@@ -15,7 +15,7 @@ Written by <a href="http://www.lissajous.it"> Wolfgang Erb</a>
 General Description
 -------------------
 
-**GBFlearn** is a simple Matlab toolbox for interpolation, regression, and semi-supervised learning with 
+**GBFlearn** is a simple Matlab toolbox for interpolation and semi-supervised learning with 
 <a href="http://www.lissajous.it/GBFlearn">Graph Basis Functions</a>.
 
 Graph basis functions (GBFs) are graph analogs of the well-known radial basis functions or the spherical basis functions. Generalized shifts of positive definite GBFs generate kernels on graphs that can be used, as in traditional continuous settings, to approximate and interpolate graph signals, or as kernel machines for supervised and semi-supervised learning.  
