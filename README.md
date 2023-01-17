@@ -63,7 +63,6 @@ Anybody interested in optimizing or refining the actual code is warmly welcome t
 
 If you are interested in a Python version of the code, you can find it at
 
-<br>
 https://github.com/GabrieleSantin/GraphBasisFunctions
 
 
