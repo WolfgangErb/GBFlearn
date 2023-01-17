@@ -1,10 +1,17 @@
 % GBFlearn: a toolbox for graph signal interpolation
 % and classification with graph basis functions (GBFs)
-% (C) W. Erb 01.03.2020
+% (C) W. Erb 15.01.2023
 
-% GBF_example_ITP_sensor2_comparison compares GBF interpolation with
+% Name: GBF_example_ITP_sensor2_comparison.m
+% This example script compares GBF interpolation with
 % bandlimited interpolation on a sensor graph. For bandlimited
-% interpolation strong Runge-type artifacts are visible. 
+% interpolation strong Runge-type artifacts are visible.
+
+% Test scenario:
+% graph: small sensor graph
+% kernel: diffusion and bandlimited 
+% number of sampling nodes: m = 40;
+% problem: compare GBF interpolation with bandlimited interpolation
 
 clear all
 close all
@@ -25,9 +32,6 @@ G.deg = sum(G.A,1);
 isD = diag(1./sqrt(G.deg));
 G.L = eye(G.N) - isD*G.A*isD;
 
-%Calculate Spectrum of graph
-[G.U,G.Lambda] = GBF_spectrum(G.L,'ascend');
-
 %Choose plotting parameter
 plotpar.MM = 2;                 %size of dots
 plotpar.ub = 0.02;              %upper boundary
@@ -39,7 +43,7 @@ plotpar.edgewidth = 1;          %width of edges
 
 %Create phantom and interpolation data on graph
 M = 40;
-idxW = (1:M);
+idxW = (1:M)';
 
 findP = find(G.nodes(:,1) >= 0.5);
 fOriginal = zeros(G.N,1);
@@ -48,14 +52,14 @@ yW = fOriginal(idxW);
 
 %Kernel parameters
 type1 = 'diffusion';
-alpha1 = -4;
+alpha1 = 4;
 
 type2 = 'bandlimited';
-alpha2 = 0;
+alpha2 = [0.93,200];
 
 %Calculate GBF interpolants
-bf1 = GBF_genGBF(G.U,G.Lambda, idxW,type1,alpha1);
-bf2 = GBF_genGBF(G.U,G.Lambda, idxW,type2,alpha2);
+bf1 = GBF_genGBFeff(G.L, idxW,type1,alpha1);
+bf2 = GBF_genGBFeff(G.L, idxW,type2,alpha2);
 
 s1 = GBF_itpGBF(bf1, idxW, yW);
 s2 = GBF_itpGBF(bf2, idxW, yW);

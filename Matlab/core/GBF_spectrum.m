@@ -14,7 +14,7 @@ function [U,Lambda] = GBF_spectrum(L,stype)
 % U            : The eigenvectors of L
 % lambda       : The (ordered) eigenvalues of L
 
-[U,Lambda,~]=svd(L);
+[U,Lambda,~]=svd(full(L));
     
 [Lambda,inds] = sort(diag(Lambda),stype);
 U = U(:,inds);

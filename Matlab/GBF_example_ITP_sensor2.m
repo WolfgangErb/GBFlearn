@@ -1,9 +1,16 @@
 % GBFlearn: a toolbox for graph signal interpolation
 % and classification with graph basis functions (GBFs)
-% (C) W. Erb 01.03.2020
+% (C) W. Erb 15.01.2023
 
-% GBF_example_ITP_sensor2 is a very simple script to show how a GBF interpolant
+% Name: GBF_example_ITP_sensor2.m
+% A very simple script to show how a GBF interpolant
 % can be calculated and plotted by the toolbox GBFlearn
+
+% Test scenario:
+% graph: small sensor network
+% kernel: diffusion GBF with alpha = 10 
+% number of sampling nodes: m = 12
+% problem: calculate and plot GBF interpolation
 
 clear all
 close all
@@ -24,9 +31,6 @@ G.deg = sum(G.A,1);
 isD = diag(1./sqrt(G.deg));
 G.L = eye(G.N) - isD*G.A*isD;
 
-% calculate GFT
-[G.U,G.Lambda] = GBF_spectrum(G.L,'ascend');
-
 %Choose plotting parameter
 plotpar.MM = 2;                 %size of dots
 plotpar.ub = 0.02;              %upper boundary
@@ -45,10 +49,10 @@ yW = zeros(M,1); yW(1:M/2) = ones(M/2,1);
 
 %Kernel parameter
 type = 'diffusion';
-alpha = -10;
+alpha = 10;
 
 %Calculate GBF interpolant
-bf = GBF_genGBF(G.U,G.Lambda, idxW,type,alpha);
+bf = GBF_genGBFeff(G.L, idxW,type,alpha);
 s = GBF_itpGBF(bf, idxW, yW);
 
 %Plot GBF interpolant

@@ -1,11 +1,18 @@
 % GBFlearn: a toolbox for graph signal interpolation
 % and classification with graph basis functions (GBFs)
-% (C) W. Erb 01.03.2020
+% (C) W. Erb 15.01.2023
 
-% GBF_example_SSL_emptyset_2feature shows how SSL based on a
+% Name: GBF_example_SSL_emptyset_2feature.m
+% This script shows how SSL based on a
 % feature-augmented GBF-RLS solver can be used to improve
 % classification accuracy in an example where geometric features are
-% available. The test data set hast the form of a slashed O. 
+% available. The test data set has the form of a slashed O. 
+
+% Test scenario:
+% graph: emptyset
+% kernel: diffusion GBF with alpha = 5 (+ additional 2 for features)
+% number of sampling nodes: M = 18
+% problem: semi-supervised learning with feature-augmented GBFs
 
 clear all
 close all
@@ -28,7 +35,7 @@ isD = diag(1./sqrt(G.deg));
 G.L = eye(G.N) - isD*G.A*isD;
 
 %Calculate Spectrum of graph
-[G.U,G.Lambda] = GBF_spectrum(G.L,'ascend');
+%[G.U,G.Lambda] = GBF_spectrum(G.L,'ascend');
 
 %Choose plotting parameter
 plotpar.MM = 1;                 %size of dots
@@ -48,13 +55,13 @@ yW = label(1:M);
 
 %Kernel parameters
 type = 'diffusion';             %Type of GBF
-alpha = -5;                     %Shape parameter
+alpha =  5;                     %Shape parameter
 lambda = 0.001;                 %Regularization parameter
 gamma1 = 10;                    %Similarity parameter feature 1
 gamma2 = 10;                    %Similarity parameter feature 2
 
 %Calculate GBF-RLS solution
-bf = GBF_genGBF(G.U,G.Lambda, idxW, type, alpha);
+bf = GBF_genGBFeff(G.L, idxW, type, alpha);
 s = GBF_RLSGBF(bf, idxW, yW,lambda);
 
 % Extract geometric features

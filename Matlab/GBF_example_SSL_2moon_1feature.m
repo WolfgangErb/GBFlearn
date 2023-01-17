@@ -1,13 +1,19 @@
 % GBFlearn: a toolbox for graph signal interpolation
 % and classification with graph basis functions (GBFs)
-% (C) W. Erb 01.03.2020
+% (C) W. Erb 15.01.2023
 
-% GBF_example_SSL_2moon_1feature shows how SSL based on a
-% feature-augmented GBF-RLS solution can be used to improve
-% classification accuracy of a supervised scheme.
+% Name: GBF_example_SSL_2moon_1feature.m
+% This script shows how SSL based on a feature-augmented GBF-RLS solution 
+% can be used to improve classification accuracy of a supervised scheme.
 % The included feature is a unsupervised classification of the graph 
 % based on spectral clustering. The test data set consists of two 
-% point clouds in the form of two nested moons.  
+% point clouds in the form of two nested moons. 
+
+% Test scenario:
+% graph: 2moon
+% kernel: diffusion GBF with alpha = 100 
+% number of sampling nodes: m = 2
+% problem: semi-supervised learning with feature-augmented GBFs
 
 clear all
 close all
@@ -49,12 +55,12 @@ yW = label(idxW);
 
 %Kernel parameter
 type = 'diffusion';             %Type of GBF
-alpha = -50;                    %Shape parameter of kernel
+alpha = 50;                     %Shape parameter of kernel
 lambda = 0.0001;                %Regularization parameter
 gamma = -1;                     %Shape parameter of feature kernel
 
 %Calculate standard GBF-RLS solution
-bf = GBF_genGBF(G.U,G.Lambda, idxW,type,alpha);
+bf = GBF_genGBFeff(G.L, idxW,type,alpha);
 s = GBF_RLSGBF(bf, idxW, yW,lambda);
 
 %Calculate (unsupervised) classification based on spectral clustering

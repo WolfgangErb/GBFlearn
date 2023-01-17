@@ -1,11 +1,12 @@
 % GBFlearn: a toolbox for graph signal interpolation
 % and classification with graph basis functions (GBFs)
-% (C) W. Erb 01.03.2020
+% (C) W. Erb 15.01.2023
 
-function [edges,A] = GBF_sim(nodes,alpha)
+function [edges,A] = GBF_sim_gauss(nodes,alpha)
 
 % Calculates edges and adjacency matrix for point clouds in order to
-% generate a NN-graph G. 
+% generate a weighted complete similarity graph G 
+%(with gaussian weights). 
 
 % INPUT:  
 % nodes        : Nodes of point cloud

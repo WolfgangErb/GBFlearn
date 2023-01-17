@@ -4,16 +4,16 @@
 
 function bf = GBF_genbinK(idxW, y, alpha)
 
-% function [bf] = GBF_genbinK(U, Lambda, idxW, type, alpha)
+% function bf = GBF_genbinK(idxW, y, alpha)
 %
 % GBF_genbinK computes a Kernel Schur multiplier based on a binary classification
 %
-% In:
+% Input:
 %    idxW      = K vector - The indices of the K basis nodes
 %    y         = labels of the binary classification
 %    alpha     = shape parameter of the binary kernel
 %
-% Out:
+% Output:
 %    bf        = NxK matrix with Schur multipliers of binary kernel
 
 N = length(y);

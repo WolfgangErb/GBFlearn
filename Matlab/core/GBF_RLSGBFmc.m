@@ -2,16 +2,17 @@
 % and classification with graph basis functions (GBFs)
 % (C) W. Erb 01.03.2020
 
-function sclass = GBF_multiclassRLSGBF(bf, idxW, y , lambda)
+function sclass = GBF_RLSGBFmc(bf, idxW, y , lambda)
 
-% function sclass = GBF_multiclassRLSGBF(bf, idxW, y, lambda)
+% function sclass = GBF_RLSGBFmc(bf, idxW, y, lambda)
 %
-% GBF_RLSGBF computes the GBF regularized least squares solution s,
+% GBF_RLSGBFmc computes a multiclass classifier based on the 
+% GBFregularized least squares solution s,
 % minimizing the functional
 %            1/K \sum_i (s(i) - y(i)) + \lambda \|s\|_(K),
 % based on K sampling nodes in idxW. 
 % 
-% GBF_multiclassRLSGBF uses a one-vs-rest strategy to reduce
+% GBF_RLSGBFmc uses a one-vs-rest strategy to reduce
 % multiclass problems to binary classification problems with GBF_RLSGBF 
 % as a basic solver.
 % 

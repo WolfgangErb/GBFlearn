@@ -1,14 +1,21 @@
 % GBFlearn: a toolbox for graph signal interpolation
 % and classification with graph basis functions (GBFs)
-% (C) W. Erb 01.03.2020
+% (C) W. Erb 15.01.2023
 
-% GBF_example_SSL_2moon_2feature shows how SSL based on a
+% Name: GBF_example_SSL_2moon_2feature.m
+% This example script shows how SSL based on a
 % feature-augmented GBF-RLS solution can be used to improve
 % classification accuracy of a supervised scheme.
 % The two included features are an unsupervised classification result  
 % based on spectral clustering and a given left-right separation 
 % of the data. The test data set consists of two 
-% point clouds in the form of nested moons.  
+% point clouds in the form of nested moons. 
+
+% Test scenario:
+% graph: 2moon
+% kernel: diffusion GBF with alpha = 50
+% number of sampling nodes: m = 4
+% problem: semi-supervised learning with feature-augmented GBFs
 
 clear all
 close all
@@ -51,15 +58,15 @@ yW = label4(idxW);
 
 %Kernel parameter
 type = 'diffusion';             %Type of GBF
-alpha = -50;                    %Shape parameter of kernel
+alpha = 50;                     %Shape parameter of kernel
 lambda = 0.0001;                %Regularization parameter
 gamma = -1;                     %Shape parameter of 1. feature kernel
 gamma2 = 0.1;                   %Shape parameter of 2. feature kernel
 
 %Calculate standard GBF-RLS classfier (for four classes)
-bf = GBF_genGBF(G.U,G.Lambda,idxW,type,alpha);
+bf = GBF_genGBFeff(G.L,idxW,type,alpha);
 
-sclass = GBF_multiclassRLSGBF(bf,idxW,yW,lambda);
+sclass = GBF_RLSGBFmc(bf,idxW,yW,lambda);
 
 %Initiate 1. feature based on spectral clustering
 %(Shi-Malik normalized cut using the median)
@@ -81,7 +88,7 @@ scut2(idxcutup2)=1; scut2(idxcutdown2) = -1;
 binK  = GBF_genbinK(idxW,scut,gamma);
 binK2 = GBF_genbinK(idxW,scut2,gamma2);
 
-sPSIclass = GBF_multiclassRLSGBF(bf.*binK.*binK2, idxW, yW, lambda);
+sPSIclass = GBF_RLSGBFmc(bf.*binK.*binK2, idxW, yW, lambda);
 
 %Plot: comparison of supervised and semi-supervised classification
 

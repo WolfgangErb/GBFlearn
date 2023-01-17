@@ -1,13 +1,20 @@
 % GBFlearn: a toolbox for graph signal interpolation
 % and classification with graph basis functions (GBFs)
-% (C) W. Erb 01.03.2020
+% (C) W. Erb 15.01.2023
 
-% GBF_example_SSL_ionosphere shows how SSL based on a
+% Name: GBF_example_SSL_ionosphere.m
+% This example script shows how SSL based on a
 % feature-augmented GBF-RLS solution can be used to improve
 % classification accuracy of a supervised scheme.
 % The included feature is a unsupervised classification of the graph 
 % based on spectral clustering. The test data set consists of the 
-% ionosphere data set from the UCI machine learning repository.  
+% ionosphere data set from the UCI machine learning repository. 
+
+% Test scenario:
+% graph: ionosphere
+% kernel: diffusion GBF with alpha = 5 (+ additional 2 for features)
+% number of labeled nodes: from 10 to 60
+% problem: semi-supervised learning with feature-augmented GBFs
 
 clear all
 close all
@@ -47,7 +54,7 @@ sCutclass(idxcutdown) = -1;
 
 %Kernel parameters
 type = 'diffusion';             % Type of GBF
-alpha = -5;                     % Shape parameter
+alpha =  5;                     % Shape parameter
 lambda = 0.001;                 % Regularization parameter
 gamma1 = 0.5;                   % Binary kernel parameter 1. test
 gamma2 = -0.5;                  % Binary kernel parameter 2. test
@@ -70,7 +77,7 @@ for j = 1:length(M)
     yW = label(idxW);
 
     %Calculate standard RLS solution
-    bf = GBF_genGBF(G.U,G.Lambda,idxW,type,alpha);
+    bf = GBF_genGBFeff(G.L,idxW,type,alpha);
     sRLS = GBF_RLSGBF(bf,idxW,yW,lambda);
 
     %Calculate feature adapted RLS solution

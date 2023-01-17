@@ -1,11 +1,16 @@
 % GBFlearn: a toolbox for graph signal interpolation
 % and classification with graph basis functions (GBFs)
-% (C) W. Erb 01.03.2020
+% (C) W. Erb 15.01.2023
 
-% GBF_example_ITP_bunny is a script to show how GBF 
-% interpolation performs in terms of the applied GBF and compared
-% to bandlimited interpolation. The used data set is a 2D projection of the
-% well-known Stanford bunny
+% Name: GBF_example_ITP_bunny.m
+% In this example script we plot different GBFs and show how GBF interpolation performs 
+% in comparison to bandlimited interpolation. 
+
+% Test scenario:
+% graph: bunny (2D projection of the well-known Stanford bunny)
+% kernel: variational spline, diffusion GBF and bandlimited kernel
+% number of sampling nodes: N = 10
+% problem: calculate and plot GBF interpolant for given sampling data
 
 clear all
 close all
@@ -20,21 +25,18 @@ G.type = 'bunny';
 %Generate graph
 [G.nodes,G.edges,G.A] = GBF_gengraph(G.type);
 
-%Calculate the graph Laplacian
+%Calculate the normalized graph Laplacian
 G.N = length(G.nodes(:,1));
 G.deg = sum(G.A,1);
 isD = diag(1./sqrt(G.deg));
 G.L = eye(G.N) - isD*G.A*isD;
 
-%Calculate Spectrum of graph
-[G.U,G.Lambda] = GBF_spectrum(G.L,'ascend');
-
 %Choose plotting parameter
 plotpar.MM = 1;                 %size of dots
 plotpar.ub = 0.02;              %upper boundary
 plotpar.lb = 0.02;              %left boundary
-plotpar.uaxis = 1.15;           %upper colorbar boundary
-plotpar.laxis = -0.15;          %lower colorbar boundary
+plotpar.uaxis = 1.25;           %upper colorbar boundary
+plotpar.laxis = -0.25;          %lower colorbar boundary
 plotpar.fontsize = 14;          %fontsize
 plotpar.colorbar = 'y';         %set 'y' if you want a colorbar
 plotpar.edge = 0;               %set 1 if you want to plot edges
@@ -46,21 +48,18 @@ yW = ones(size(idxW));
 
 %Kernel parameters for interpolation
 type1 = 'diffusion';
-alpha1 = -10;
+alpha1 = 10;
 
-type2 = 'polydecay';
-alpha2 = -1;
+type2 = 'bandlimited';
+alpha2 = [0.1, 100];
 
 type3 = 'varspline';
-alpha3 = [-2, 0.01];
-
-type4 = 'bandlimited';
-alpha4= 0;
+alpha3 = [2, 0.02];
 
 %Calculate GBF interpolation
-bf1 = GBF_genGBF(G.U,G.Lambda,idxW,type1,alpha1);
-bf2 = GBF_genGBF(G.U,G.Lambda,idxW,type2,alpha2);
-bf3 = GBF_genGBF(G.U,G.Lambda,idxW,type3,alpha3);
+bf1 = GBF_genGBFeff(G.L,idxW,type1,alpha1);
+bf2 = GBF_genGBFeff(G.L,idxW,type2,alpha2);
+bf3 = GBF_genGBFeff(G.L,idxW,type3,alpha3);
 
 s1 = GBF_itpGBF(bf1, idxW, yW);
 s2 = GBF_itpGBF(bf2, idxW, yW);
@@ -81,7 +80,7 @@ hold off;
 
 subplot(2,6,[3,4,9,10]), 
 GBF_drawsignal(G.nodes,G.edges,s2,plotpar);
-title('GBF with polynomial decay');
+title('Bandlimited GBF');
 hold on;
 plot( G.nodes(idxW,1),G.nodes(idxW,2),'o','color',[0, 0, 0]/255,'LineWidth',1,'MarkerSize',5)
 set(gca,'XTick',[], 'YTick', [])
@@ -102,8 +101,8 @@ yW = zeros(size(idxW));
 yW(1:5) = ones(5,1);
 
 %Calculate GBF interpolation of this second set with third and fourth kernel
-bfvs = GBF_genGBF(G.U,G.Lambda,idxW,type3,alpha3);
-bfband = GBF_genGBF(G.U,G.Lambda,idxW,type4,alpha4);
+bfvs = GBF_genGBFeff(G.L,idxW,type3,alpha3);
+bfband = GBF_genGBFeff(G.L,idxW,type2,alpha2);
 [svs,~] = GBF_itpGBF(bfvs,idxW,yW);
 [sband,~] = GBF_itpGBF(bfband,idxW,yW);
 

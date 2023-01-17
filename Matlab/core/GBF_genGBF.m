@@ -1,16 +1,16 @@
 % GBFlearn: a toolbox for graph signal interpolation
 % and classification with graph basis functions (GBFs)
-% (C) W. Erb 01.03.2020
+% (C) W. Erb 15.01.2023
 
-function [bf,pdf] = GBF_genGBF(U, Lambda, idxW, type, alpha)
+function [bf,pdf] = GBF_genGBF(L, idxW, type, alpha)
 
-% function [bf,pdf] = GBF_genGBF(U, Lambda, idxW, type, alpha, epsilon)
+% function [bf,pdf] = GBF_genGBF(L, idxW, type, alpha)
 %
 % Computes K generalized translates of the GBF for the nodes in idxW
+% Uses the spectral decomposition of the graph Laplacian L
 %
 % In:
-%    U         = NxN matrix - the Fourier transform matrix on G
-%    Lambda    = Nx1 vector - the eigenvalues of the Laplacian
+%    L         = NxN matrix - the graph Laplacian
 %    idxW      = K vector - The indices of the K interpolation nodes
 %    type      = type of graph basis function
 %    alpha     = additional shape parameter
@@ -19,8 +19,11 @@ function [bf,pdf] = GBF_genGBF(U, Lambda, idxW, type, alpha)
 %    bf        = NxK matrix with the K basis function vectors
 %    pdf       = the generating p.d. function f
 
-N = length(Lambda);
+N = size(L,1);
 K = length(idxW);
+
+%Calculate Spectrum of Laplacian
+[U,Lambda] = GBF_spectrum(L,'ascend');
 
 %Initialize variables
 
@@ -31,24 +34,24 @@ base = zeros(N,1);
 
 switch type
     
-  case 'varspline'      %Variation spline kernel
-  if length(alpha)==1;
+  case 'varspline'      %Variational spline kernel
+  if length(alpha)==1
       alpha(2) = 0;
   end    
     
-  f = (alpha(2)+Lambda).^(alpha(1));
+  f = (alpha(2)+Lambda).^(-alpha(1));
   f(abs(f)>=1e12) = 0;
   
   case 'diffusion'      %Diffusion kernel
   
-  f = exp(alpha*Lambda);
+  f = exp(-alpha(1)*Lambda);
   
   case 'polydecay'      %Kernel with polynomial decay
-  if length(alpha)==1;
+  if length(alpha)==1
       alpha(2) = 1;
   end      
       
-  f = transpose(1+alpha(2)*(0:N-1)).^(alpha(1));
+  f = transpose(1+alpha(2)*(0:N-1)).^(-alpha(1));
   
   case 'bandlimited'    %Bandlimited kernel
      
